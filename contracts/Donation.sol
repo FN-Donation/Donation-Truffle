@@ -3,22 +3,26 @@ pragma solidity >=0.4.22 <0.8.0;
 
 contract Donation {
     struct Fundraiser {
-        address fundraiser_account;
-        uint target_amount;
-        address beneficiary_account;
+        address fundraiserAccount;
+        uint targetAmount;
+        address beneficiaryAccount;
     }
 
     Fundraiser[] public fundraisers;
 
-    function donate(uint amount, address fundraiser_account, string password) public {
+    function donate(uint _amount, address _fundraiserAccount, string _password) public {
 
     }
 
-    function send_amount_when_not_acchieved(address fundraiser_account, uint now_fundaiser) public {
+    function sendAmountWhenNotAcchieved(address _fundraiserAccount, uint _nowFundaiser) public {
 
+    }
+
+    function createFundraiser(address _fundraiserAccount, address _beneficiaryAccount,uint _targetAmount)public {
+        fundraisers.push(Fundraiser(_fundraiserAccount, _targetAmount, _beneficiaryAccount ));
     }
     
-    function create_fundraiser(address fundraiser_account, address beneficiary_account,uint target_amount)public {
-        
+    function showFundraiser(uint _index) public view returns (address, uint, address) {
+        return (fundraisers[_index].fundraiserAccount, fundraisers[_index].targetAmount, fundraisers[_index].beneficiaryAccount);
     }
 }
