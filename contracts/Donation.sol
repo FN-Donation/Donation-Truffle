@@ -11,7 +11,7 @@ contract Donation {
     Fundraiser[] public fundraisers;
 
     constructor () public {
-        // fundraisers.push(Fundraiser(0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061, 100, 0,0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
+        fundraisers.push(Fundraiser(0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061, 100,0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
     }
 
     // function donate(address payable fundraiser_account) payable public returns (uint){

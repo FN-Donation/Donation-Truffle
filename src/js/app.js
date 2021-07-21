@@ -1,9 +1,12 @@
 'use strict';
+let App = {
+  web3Provider: null,
+  contracts: {},
+}
 
 $(function() {
   $(window).load(function() {
-    var web3;
-    var web3Provider;
+    var donation;
     // create web3Provider
   
     // if (typeof web3 !== 'undefined'){
@@ -11,11 +14,23 @@ $(function() {
     //   window.ethereum.enable();
     //   web3 = new Web3(web3Provider);
     // }else {
-    web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-    web3 = new Web3(web3Provider)
+    App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    web3 = new Web3(App.web3Provider)
     // }
+    // const abi = require('Donation.json').abi; \
+    $.getJSON("Donation.json", function(data){
+      const address = '0x6bc1aEA651BcaD6533BB73c433b3985c5318A707'; 
+      console.log(data.abi)
+      App.contracts.Donation = new web3.eth.Contract(data.abi, address);
+    });
 
-
+    $("#testContract").click(()=>{
+      console.log(App.contracts.Donation);
+      App.contracts.Donation.methods.showFundraiser(0).call().then(result => console.log(result));
+      console.log(web3.eth.accounts);
+    });
+    
+    // var donation = web3.eth.Contract("Donation.json", '0x6bc1aEA651BcaD6533BB73c433b3985c5318A707');
     // ------------- Sangil's Part -------------------
     // $("#test").click(function(){
     //   alert("test");
