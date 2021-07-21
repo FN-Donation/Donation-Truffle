@@ -33,9 +33,9 @@ $(function() {
     });
 
     // ------------- Sangil's Part -------------------
-    $("#test").click(function(){
-      alert("test");
-      let amount = web3.utils.toWei("5");
+    $(".do-donation").click(function(){
+      let amount_ether = prompt("how much would you donate?");
+      let amount = web3.utils.toWei('' + amount_ether);
       console.log(amount);
       App.contracts.Donation.methods.donate("0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A", amount).call()
       .then(data => {
@@ -61,6 +61,7 @@ $(function() {
             //   data: ""
             // }, 'password').then(console.log);
           });
+        alert("Thank you for your Donation!, This Funding Has Done!");
         }else if(data == 1){
           web3.eth.sendTransaction({
             from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", // change to sender
@@ -69,7 +70,8 @@ $(function() {
             to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A', // change to fundraiser account
             value: amount,
             data: ""
-          }, 'password').then(console.log);
+          }, 'password').then(console.log); 
+          alert("Thank you for your Donation!");
         }else if(data == 0){
           // transaction error
           alert("error: please donate smaller amount");
@@ -78,7 +80,8 @@ $(function() {
     });
     // --------------------------------------------------
     // setting function when click button(id=new)
-    $("#new").click(function() {
+    $("#submit-fundraiser").click(function(event) {
+        event.preventDefault();
         // get all accounts and print
         
         // web3.eth.getAccounts(function(err, accounts) {
@@ -87,12 +90,14 @@ $(function() {
           // Need to Accept the information of Fudraiser
           // create new Account and print all accounts
           // check the console on the broswer F12
-          web3.personal.newAccount('p', (err, createdAddress) => {
+          web3.eth.personal.newAccount('p', (err, createdAddress) => {
             console.log(createdAddress)
             
             let accounts = web3.eth.accounts
             console.log(accounts)
           });
+          // create fundraiser
+          // App.contracts.Donation.methods
           // start duration of fundraiser
           App.contracts.Donation.methods.updateTimestamp().call().then(result => console.log(result));
       });

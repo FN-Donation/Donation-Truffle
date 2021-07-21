@@ -10,7 +10,8 @@ contract Donation {
     }
 
     Fundraiser[] public fundraisers;
-
+    // event MyEvent (address indexed donator, string value);
+    
     constructor () public {
         fundraisers.push(Fundraiser(0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A, 100000000000000000000, 0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
     }

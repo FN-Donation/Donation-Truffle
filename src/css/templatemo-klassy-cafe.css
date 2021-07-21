@@ -1056,27 +1056,27 @@ menu
 
 /*
 ---------------------------------------------
-chefs
+fundraisers
 ---------------------------------------------
 */
 
-#chefs {
+#fundraisers {
   padding-top: 120px;
 }
 
-#chefs .section-heading {
+#fundraisers .section-heading {
   margin-bottom: 70px;
 }
 
-#chefs .section-heading h6 {
+#fundraisers .section-heading h6 {
   padding-left: 0px;
 }
 
-#chefs .section-heading h6:before {
+#fundraisers .section-heading h6:before {
   display: none;
 }
 
-#chefs .chef-item {
+#fundraisers .fundraiser-item {
   text-align: center;
   border: 1px solid #afafaf;
   padding: 5px;
@@ -1084,25 +1084,25 @@ chefs
   border-radius: 3px;
 }
 
-#chefs .chef-item:hover {
+#fundraisers .fundraiser-item:hover {
   border-color: #fb5849;
 }
 
-#chefs .chef-item:hover .down-content h4 {
+#fundraisers .fundraiser-item:hover .down-content h4 {
   color: #fb5849;
 }
 
-#chefs .chef-item .thumb {
+#fundraisers .fundraiser-item .thumb {
   position: relative;
 }
 
-#chefs .chef-item .thumb img {
+#fundraisers .fundraiser-item .thumb img {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
 
-#chefs .chef-item .thumb .overlay {
+#fundraisers .fundraiser-item .thumb .overlay {
   position: absolute;
   background-color: #2a2a2a;
   border-radius: 3px;
@@ -1116,7 +1116,7 @@ chefs
   transition: all .3s;
 }
 
-#chefs .chef-item .thumb ul.social-icons {
+#fundraisers .fundraiser-item .thumb ul.social-icons {
   position: absolute;
   z-index: 11;
   top: 50%;
@@ -1128,12 +1128,12 @@ chefs
   visibility: hidden;
 }
 
-#chefs .chef-item .thumb ul.social-icons li {
+#fundraisers .fundraiser-item .thumb ul.social-icons li {
   display: inline-block;
   margin: 0px 5px;
 }
 
-#chefs .chef-item .thumb ul.social-icons li a {
+#fundraisers .fundraiser-item .thumb ul.social-icons li a {
   width: 40px;
   height: 40px;
   background-color: #fff;
@@ -1145,32 +1145,32 @@ chefs
   transition: all .5s;
 }
 
-#chefs .chef-item .thumb ul.social-icons li a:hover {
+#fundraisers .fundraiser-item .thumb ul.social-icons li a:hover {
   background-color: #fb5849;
 }
 
-#chefs .chef-item:hover .overlay {
+#fundraisers .fundraiser-item:hover .overlay {
   opacity: .9;
   visibility: visible;
 }
 
-#chefs .chef-item:hover ul.social-icons {
+#fundraisers .fundraiser-item:hover ul.social-icons {
   opacity: 1;
   visibility: visible;
 }
 
-#chefs .chef-item .down-content {
+#fundraisers .fundraiser-item .down-content {
   padding: 20px 0px;
 }
 
-#chefs .chef-item .down-content h4 {
+#fundraisers .fundraiser-item .down-content h4 {
   transition: all .3s;
   font-size: 20px;
   font-weight: 700;
   color: #2a2a2a;
 }
 
-#chefs .chef-item .down-content span {
+#fundraisers .fundraiser-item .down-content span {
   font-size: 14px;
   color: #2a2a2a;
 }
@@ -1559,7 +1559,7 @@ responsive
     margin-left: 0px;
     margin-top: 30px;
   }
-  #chefs .chef-item {
+  #fundraisers .fundraiser-item {
     margin-bottom: 30px;
   }
   #reservation .phone {
