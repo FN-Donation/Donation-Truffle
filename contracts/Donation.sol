@@ -12,40 +12,51 @@ contract Donation {
     Fundraiser[] public fundraisers;
 
     constructor () public {
-        fundraisers.push(Fundraiser(0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061, 100,0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
+        fundraisers.push(Fundraiser(0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A, 100000000000000000000, 0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
     }
 
-    // function donate(address payable fundraiser_account) payable public returns (uint){
-    //     // already check the price
+    function donate(address payable fundraiserAccount, uint amount) payable public returns (uint){
+        // check not over the targetAmount
+        // ##params : fundraiser_account, amount_to_donate
+        // cur = fundraiser_account.balance
+        // if amount + cur == target
+        // : transfer to fundraiser amount & delete fundraiser from array & transfer target to beneficiary
+        // elif amount + cur < target
+        // : transfer to fundraiser amount
+        // else : error break;
+        uint currentAmount = fundraiserAccount.balance;
 
-    //     Fundraiser memory fundraiser;
-    //     uint index;
+        Fundraiser memory fundraiser;
+        uint index;
 
-    //     for(uint i = 0; i < fundraisers.length; i++){
-    //         if(fundraisers[i].fundraiser_account == fundraiser_account){
-    //             fundraiser = fundraisers[i];
-    //             index = i;
-    //             break;
-    //         }
-    //     }
-    //     uint amount = msg.value;
-    //     // donate
-    //     fundraiser_account.transfer(msg.value);
-    //     fundraiser.current_amount += amount;
+        for(uint i = 0; i < fundraisers.length; i++){
+            if(fundraisers[i].fundraiserAccount == fundraiserAccount){
+                fundraiser = fundraisers[i];
+                index = i;
+                break;
+            }
+        }
 
-    //     if (fundraiser.current_amount + amount >= fundraiser.target_amount){
-    //         // done 
-    //         // transfer all token to beneficiary
-    //         address payable beneficiary_account = address(uint160(fundraiser.beneficiary_account));
-    //         beneficiary_account.transfer(fundraiser.current_amount);
-    //         // delete fundraiser from array
-    //         fundraisers[index] = fundraisers[fundraisers.length - 1];
-    //         delete fundraisers[fundraisers.length - 1];
-    //         fundraisers.length--;
-    //     } 
-    //     uint cur = fundraiser.current_amount;
-    //     return cur;
-    // }
+        uint targetAmount = fundraiser.targetAmount;
+        if (amount + currentAmount == targetAmount){
+
+            // delete fundraiser from array
+            fundraisers[index] = fundraisers[fundraisers.length - 1];
+            delete fundraisers[fundraisers.length - 1];
+            fundraisers.length--;
+
+            // fundraiserAccount.transfer(amount);
+            // transfer target to beneficiary
+            return 2;
+        }else if(amount + currentAmount < targetAmount){
+            // fundraiserAccount.transfer(amount);
+            return 1;
+        }else {
+            //error
+            return 0;
+        }
+        
+    }
 
     // Development using now that can display the current time in Solidity
     uint lastUpdated;
