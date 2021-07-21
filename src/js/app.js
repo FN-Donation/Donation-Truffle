@@ -23,7 +23,10 @@ $(function() {
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
     });
-
+    
+    // Test Contract Instance
+    // Function showFundraiser
+    // Check console log in F12
     $("#testContract").click(()=>{
       console.log(App.contracts.Donation);
       App.contracts.Donation.methods.showFundraiser(0).call().then(result => console.log(result));
