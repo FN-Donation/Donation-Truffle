@@ -2,6 +2,7 @@
 pragma solidity >=0.4.22 <0.8.0;
 
 contract Donation {
+    
     struct Fundraiser {
         address fundraiserAccount;
         uint targetAmount;
@@ -46,8 +47,20 @@ contract Donation {
     //     return cur;
     // }
 
-    function sendAmountWhenNotAcchieved(address _fundraiserAccount, uint _nowFundaiser) public {
-
+    // Development using now that can display the current time in Solidity
+    uint lastUpdated;
+    //set lastupdated to now
+    function updateTimestamp() public {
+        lastUpdated = now;
+    }
+    //true if 30 days have passed since the last updateTimestamp was called, false if not yet
+    function monthHavePssded() public view returns (bool) {
+        return (now >= (lastUpdated + 30 days));
+    }
+    function sendAmountWhenNotAcchieved() public {
+        if(now >= (lastUpdated + 30 days)) {
+            do sendTransation;
+        }
     }
 
     function createFundraiser(address _fundraiserAccount, address _beneficiaryAccount,uint _targetAmount)public {
