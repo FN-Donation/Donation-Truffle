@@ -19,7 +19,7 @@ $(function() {
     // }
     // const abi = require('Donation.json').abi; \
     $.getJSON("Donation.json", function(data){
-      const address = '0xEd6ec170b8eAC0B83d06580637c16c18572F8136'; 
+      const address = '0x22369567E3Ef06FeFe9567bBc6ee7F96A81b8698'; 
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
     });
@@ -40,16 +40,46 @@ $(function() {
       //  App.contracts.Donation.deployed().then(function (instance) {
       //   donationInstance = instance;
       //   return donationInstance.donate("0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", 10,  {from: App.account});
-      // App.contracts.Donation.methods.donate("0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A").call({from: '0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061',value: web3.utils.toWei('5')})
-      // .then(data => console.log(data));
-      web3.eth.sendTransaction({
-        from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061",
-        gasPrice: "20000000000",
-        gas: "21000",
-        to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A',
-        value: "1000000000000000000",
-        data: ""
-    }, 'password').then(console.log);
+      let amount = web3.utils.toWei("5");
+      console.log(amount);
+      App.contracts.Donation.methods.donate("0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A", amount).call()
+      .then(data => {
+        console.log(data);
+        if (data == 2){
+          // transaction to fundraiser
+          web3.eth.sendTransaction({
+            from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", // change to sender
+            gasPrice: "20000000000",
+            gas: "21000",
+            to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A', // change to fundraiser account
+            value: amount,
+            data: ""
+          }, 'password').then(tx_info =>{
+            console.log(tx_info);
+            // transaction to beneficiary all balance in fundraiser
+            // web3.eth.sendTransaction({
+            //   from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", // change to fundraiser
+            //   gasPrice: "20000000000",
+            //   gas: "21000",
+            //   to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A', // change to beneficiary account
+            //   value: amount,
+            //   data: ""
+            // }, 'password').then(console.log);
+          });
+        }else if(data == 1){
+          web3.eth.sendTransaction({
+            from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", // change to sender
+            gasPrice: "20000000000",
+            gas: "21000",
+            to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A', // change to fundraiser account
+            value: amount,
+            data: ""
+          }, 'password').then(console.log);
+        }else if(data == 0){
+          // transaction error
+          alert("error: please donate smaller amount");
+        }
+      });
     });
     // --------------------------------------------------
 
