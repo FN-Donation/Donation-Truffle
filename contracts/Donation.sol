@@ -55,7 +55,7 @@ contract Donation {
             //error
             return 0;
         }
-        
+
     }
 
     // Development using now that can display the current time in Solidity
@@ -65,14 +65,14 @@ contract Donation {
         lastUpdated = now;
     }
     //true if 30 days have passed since the last updateTimestamp was called, false if not yet
-    function monthHavePssded() public view returns (bool) {
+    function monthHavePassed() public view returns (bool) {
         return (now >= (lastUpdated + 30 days));
     }
-    function sendAmountWhenNotAcchieved() public {
-        if(now >= (lastUpdated + 30 days)) {
-            do sendTransation;
-        }
-    }
+    // function sendAmountWhenNotAcchieved() public {
+    //     if(now >= (lastUpdated + 30 days)) {
+    //         do sendTransation;
+    //     }
+    // }
 
     function createFundraiser(address _fundraiserAccount, address _beneficiaryAccount,uint _targetAmount)public {
         fundraisers.push(Fundraiser(_fundraiserAccount, _targetAmount, _beneficiaryAccount ));

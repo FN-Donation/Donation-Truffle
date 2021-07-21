@@ -80,20 +80,39 @@ $(function() {
     // setting function when click button(id=new)
     $("#new").click(function() {
         // get all accounts and print
-        App.contracts.Donation.methods.updateTimestamp().call().then(result => console.log(result));
-
-        web3.eth.getAccounts(function(err, accounts) {
-            console.log(accounts);
-        });
-
-        // create new Account and print all accounts
-        // check the console on the broswer F12
-        web3.personal.newAccount('p', (err, createdAddress) => {
+        
+        // web3.eth.getAccounts(function(err, accounts) {
+          //     console.log(accounts);
+          // });
+          // Need to Accept the information of Fudraiser
+          // create new Account and print all accounts
+          // check the console on the broswer F12
+          web3.personal.newAccount('p', (err, createdAddress) => {
             console.log(createdAddress)
-
+            
             let accounts = web3.eth.accounts
             console.log(accounts)
-        });
+          });
+          // start duration of fundraiser
+          App.contracts.Donation.methods.updateTimestamp().call().then(result => console.log(result));
       });
+    $("#season-pass").click(function(){
+      App.contracts.Donation.methods.monthHavePassed().call()
+      .then(passed => {
+        if (passed){
+          // due over
+          // send the amount of current funds
+          web3.eth.sendTransaction({
+            from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", // change to fudnraiser
+            gasPrice: "20000000000",
+            gas: "21000",
+            to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A', // change to beneficiary account
+            value: amount,
+            data: ""
+          }, 'password').then(console.log);
+          // done or revise.. make deceision!$$
+        }
+      })
+    })
   });
 });
