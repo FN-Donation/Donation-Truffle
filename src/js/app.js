@@ -19,7 +19,7 @@ $(function() {
     // }
     // const abi = require('Donation.json').abi; \
     $.getJSON("Donation.json", function(data){
-      const address = '0x6bc1aEA651BcaD6533BB73c433b3985c5318A707'; 
+      const address = '0xEd6ec170b8eAC0B83d06580637c16c18572F8136'; 
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
     });
@@ -28,20 +28,29 @@ $(function() {
     // Function showFundraiser
     // Check console log in F12
     $("#testContract").click(()=>{
-      console.log(App.contracts.Donation);
+      // console.log(App.contracts.Donation);
       App.contracts.Donation.methods.showFundraiser(0).call().then(result => console.log(result));
-      console.log(web3.eth.accounts);
+      // console.log(web3.eth.accounts);
     });
     
     // var donation = web3.eth.Contract("Donation.json", '0x6bc1aEA651BcaD6533BB73c433b3985c5318A707');
     // ------------- Sangil's Part -------------------
-    // $("#test").click(function(){
-    //   alert("test");
-    //    App.contracts.Donation.deployed().then(function (instance) {
-    //     donationInstance = instance;
-    //     return donationInstance.donate("0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", {from: App.account, value: web3.toWei(10, 'ether')});
-    //   }).then(data => console.log(data))
-    // })
+    $("#test").click(function(){
+      alert("test");
+      //  App.contracts.Donation.deployed().then(function (instance) {
+      //   donationInstance = instance;
+      //   return donationInstance.donate("0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", 10,  {from: App.account});
+      // App.contracts.Donation.methods.donate("0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A").call({from: '0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061',value: web3.utils.toWei('5')})
+      // .then(data => console.log(data));
+      web3.eth.sendTransaction({
+        from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061",
+        gasPrice: "20000000000",
+        gas: "21000",
+        to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A',
+        value: "1000000000000000000",
+        data: ""
+    }, 'password').then(console.log);
+    });
     // --------------------------------------------------
 
     // setting function when click button(id=new)
@@ -54,10 +63,10 @@ $(function() {
 
       // create new Account and print all accounts
       // check the console on the broswer F12
-      web3.personal.newAccount('p', (err, createdAddress) => {
+      web3.eth.personal.newAccount('p', (err, createdAddress) => {
         console.log(createdAddress)
 
-        let accounts = web3.eth.accounts
+        let accounts = web3.eth.accounts;
         console.log(accounts)
       });
     });
