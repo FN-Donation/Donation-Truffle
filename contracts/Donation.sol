@@ -71,11 +71,6 @@ contract Donation {
     function monthHavePassed() public view returns (bool) {
         return (now >= (lastUpdated + 30 days));
     }
-    // function sendAmountWhenNotAcchieved() public {
-    //     if(now >= (lastUpdated + 30 days)) {
-    //         do sendTransation;
-    //     }
-    // }
 
     function createFundraiser(address _fundraiserAccount, address _beneficiaryAccount, uint _targetAmount) public returns (uint) {
         Fundraiser memory fundraiser;

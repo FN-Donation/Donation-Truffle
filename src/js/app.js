@@ -15,10 +15,12 @@ $(function() {
     //   window.ethereum.enable();
     //   web3 = new Web3(web3Provider);
     // }else {
-    App.web3Provider = new Web3.providers.WebsocketProvider('ws://localhost:7545');
+    App.web3Provider = new Web3.providers.WebsocketProvider('ws://localhost:7545'); // Create Web3 Instance
     web3 = new Web3(App.web3Provider)
     // }
-    // Assign the Donator Account
+
+
+    // ### Assign the Donator Account Setting ###
     web3.eth.getAccounts().then(async accounts => {
       for(var i = 0; i < 4; i++){
         // console.log(web3.eth.getBalance(accounts[i]).PromiseResult)
@@ -42,6 +44,8 @@ $(function() {
       })
     });
 
+
+    // Create Contract Instance
     $.getJSON("Donation.json", function(data){
       // change to contract address (Donation)
       const address = '0x0bBECE91a18CE116f1C5E2D8885062a8E0D80b5c'; // sangil contract address
@@ -49,6 +53,7 @@ $(function() {
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
     });
     
+
     // Test Contract Instance
     // Function showFundraiser
     // Check console log in F12
@@ -56,7 +61,8 @@ $(function() {
       App.contracts.Donation.methods.showFundraiser(0).call().then(result => console.log(result));
     });
 
-    // ------------- Sangil's Part -------------------
+
+    // ### Donate Fundtion Call###
     $(".do-donation").click(function(){
       let amount_ether = prompt("how much would you donate?");
       let amount = web3.utils.toWei('' + amount_ether);
@@ -101,17 +107,6 @@ $(function() {
             data: ""
           }, 'password').then((result) => {
             console.log(result)
-          //   App.contracts.Donation.events.DonationEvent({
-          //     filter: {fundraiser: fundraiserAccount, donator: App.account}, // Using an array means OR: e.g. 20 or 23
-          //     fromBlock: 0
-          //   }, function(error, event){ console.log(event); })
-          //   .on('data', function(event){
-          //       console.log(event); // same results as the optional callback above
-          //   })
-          //   .on('changed', function(event){
-          //       // remove event from local database
-          //   })
-          //   .on('error', console.error);
           }); 
           alert("Thank you for your Donation!");
         }else if(data == 0){
@@ -132,15 +127,14 @@ $(function() {
         });
       });
     });
-    // --------------------------------------------------
+
+
     // setting function when click button(id=new)
+    // ### Create Fundraiser Function Call!! (form tag) ###
     $("#submit-fundraiser").click(function(event) {
         event.preventDefault();
         // get all accounts and print
         
-        // web3.eth.getAccounts(function(err, accounts) {
-          //     console.log(accounts);
-          // });
           // Need to Accept the information of Fudraiser
           // create new Account and print all accounts
           // check the console on the broswer F12
@@ -158,15 +152,10 @@ $(function() {
           // App.contracts.Donation.methods.updateTimestamp().call().then(result => console.log(result));
           return false;
       });
-    $("#test").click(function(){
       
-      // App.contracts.Donation.events.DonationEvent().watch((err, res)=>{
-      //   if(err){
-      //     console.log(err);
-      //   }else{
-      //     console.log(res);
-      //   }
-      // })
+
+    //  ###Test Function, now=> get Past Events###
+    $("#test").click(function(){
       App.contracts.Donation.getPastEvents('DonationEvent', {
         // filter: {myIndexedParam: [20,23], myOtherIndexedParam: '0x123456789...'}, // Using an array means OR: e.g. 20 or 23
         fromBlock: 0,
@@ -177,6 +166,8 @@ $(function() {
     });
     })
     
+
+    // ###Function Call When Season Passed###
     $("#season-pass").click(function(){
       App.contracts.Donation.methods.monthHavePassed().call()
       .then(passed => {
