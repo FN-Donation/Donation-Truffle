@@ -20,7 +20,7 @@ $(function() {
     // const abi = require('Donation.json').abi; \
     $.getJSON("Donation.json", function(data){
       // change to contract address (Donation)
-      const address = '0x22369567E3Ef06FeFe9567bBc6ee7F96A81b8698'; 
+      const address = '0x22369567E3Ef06FeFe9567bBc6ee7F96A81b8698'; // sangil contract address
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
     });
