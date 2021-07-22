@@ -11,6 +11,7 @@ contract Donation {
 
     Fundraiser[] public fundraisers;
     event DonationEvent (address indexed donator, address indexed fundraiser, uint amount);
+    event ActionEvent(uint8 action);
         
     constructor () public {
         // fundraisers.push(Fundraiser(0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A, 100000000000000000000, 0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
@@ -49,14 +50,14 @@ contract Donation {
             // fundraiserAccount.transfer(amount);
             // transfer target to beneficiary
             emit DonationEvent(msg.sender, fundraiserAccount, amount);
-            return 2;
+            emit ActionEvent(2);
         }else if(amount + currentAmount < targetAmount){
             // fundraiserAccount.transfer(amount);
             emit DonationEvent(msg.sender, fundraiserAccount, amount);
-            return 1;
+            emit ActionEvent(1);
         }else {
             //error
-            return 0;
+            emit ActionEvent(0);
         }
 
     }

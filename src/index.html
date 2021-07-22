@@ -136,17 +136,33 @@
             <div class="row justify-content-center mb-5 element-animate">
                 <div class="col-md-8 text-center mb-5">
                     <h2 class="text-uppercase heading border-bottom mb-4">Search</h2>
-                    <form id="searchEx">
+                    <form id="searchEx" name="serach">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="EOA" placeholder="EOA계좌를 검색해주세요."
+                            <input type="text" class="form-control" id="" name="EOA" placeholder="EOA계좌를 검색해주세요."
                                 aria-label="EOA's name" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2"
-                                onclick="searchEOA()">Button</button>
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="margin-inline: 20px;">search</button>
                         </div>
                     </form>
+                    <div class="container">
+                        <section class='tabs-content'>
+                            <article id='tabs-1'>
+                                <div id="search-result" class="row">
+                                    <!-- <div class="col-lg-4">
+                                        <div class="tab-item">
+                                            <img src="images/tab-item-04.png" alt="">
+                                            <h4>Eggs Omelette</h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
+                                            <div class="price">
+                                                <h6>$14</h6>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </article>
+                        </section>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
     <!-- ***** About Area Ends ***** -->
@@ -163,127 +179,9 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="menu-item-carousel">
-            <div class="col-lg-12">
-                <div id="tx-infos" class="owl-menu-item owl-carousel"> -->
-                    <!-- <div class="item">
-                        <div class='card card1'>
-                            <div class="price">
-                                <h6>$14</h6>
-                            </div>
-                            <div class='info'>
-                                <h1 class='title'>Chocolate Cake</h1>
-                                <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.
-                                </p>
-                                <div class="main-text-button">
-                                    <div class="scroll-to-section"><a href="#reservation">Make Reservation <i
-                        class="fa fa-angle-down"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card2'>
-                            <div class="price">
-                                <h6>$22</h6>
-                            </div>
-                            <div class='info'>
-                                <h1 class='title'>Klassy Pancake</h1>
-                                <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.
-                                </p>
-                                <div class="main-text-button">
-                                    <div class="scroll-to-section"><a href="#reservation">Make Reservation <i
-                        class="fa fa-angle-down"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card3'>
-                            <div class="price">
-                                <h6>$18</h6>
-                            </div>
-                            <div class='info'>
-                                <h1 class='title'>Tall Klassy Bread</h1>
-                                <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.
-                                </p>
-                                <div class="main-text-button">
-                                    <div class="scroll-to-section"><a href="#reservation">Make Reservation <i
-                        class="fa fa-angle-down"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="item">
-                        <div class='card card4'>
-                            <div class="price">
-                                <h6>$10</h6>
-                            </div>
-                            <div class='info'>
-                                <h1 class='title'>Blueberry CheeseCake</h1>
-                                <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do
-                                    eiusmod teme.
-                                </p>
-                                <div class="main-text-button">
-                                    <div class="scroll-to-section"><a href="#reservation">Make Reservation <i
-                                                class="fa fa-angle-down"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card5'>
-                            <div class="price">
-                                <h6>$8.50</h6>
-                            </div>
-                            <div class='info'>
-                                <h1 class='title'>Klassy Cup Cake</h1>
-                                <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do
-                                    eiusmod teme.
-                                </p>
-                                <div class="main-text-button">
-                                    <div class="scroll-to-section"><a href="#reservation">Make Reservation <i
-                                                class="fa fa-angle-down"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class='card card3'>
-                            <div class="price">
-                                <h6>$7.25</h6>
-                            </div>
-                            <div class='info'>
-                                <h1 class='title'>Klassic Cake</h1>
-                                <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do
-                                    eiusmod teme.
-                                </p>
-                                <div class="main-text-button">
-                                    <div class="scroll-to-section"><a href="#reservation">Make Reservation <i
-                                                class="fa fa-angle-down"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                <!-- </div>
-            </div>
-        </div> -->
         <div class="menu-item-carousel">
             <div class="col-lg-12">
                 <div id="tx-infos" class="owl-menu-item owl-carousel owl-theme">
-        <!-- <div id="tx-infos" class="owl-carousel owl-theme"> -->
-            <!-- <div class="item"><h4>1</h4></div>
-            <div class="item"><h4>2</h4></div>
-            <div class="item"><h4>3</h4></div>
-            <div class="item"><h4>4</h4></div>
-            <div class="item"><h4>5</h4></div>
-            <div class="item"><h4>6</h4></div>
-            <div class="item"><h4>7</h4></div>
-            <div class="item"><h4>8</h4></div>
-            <div class="item"><h4>9</h4></div>
-            <div class="item"><h4>10</h4></div>
-            <div class="item"><h4>11</h4></div>
-            <div class="item"><h4>12</h4></div> -->
               </div>
            </div>
         </div>
@@ -314,7 +212,7 @@
                         <div class="down-content">
                             <h4>NO.1</h4>
                             <span>Fundraiser</span>
-                            <span id="1-fundraiser" hidden>0xE57A0dF5D532A0c097069bcae26352816b0E4A69</span>
+                            <span id="1-fundraiser" hidden>0x9dC855da949352c84290af8F307CaC6106B41a4f</span>
                         </div>
                     </div>
                 </div>
@@ -330,7 +228,7 @@
                         <div class="down-content">
                             <h4>NO.1</h4>
                             <span>Fundraiser</span>
-                            <span id="1-fundraiser" hidden>0xE57A0dF5D532A0c097069bcae26352816b0E4A69</span>
+                            <span id="1-fundraiser" hidden>0x9dC855da949352c84290af8F307CaC6106B41a4f</span>
                         </div>
                     </div>
                 </div>
@@ -346,7 +244,7 @@
                         <div class="down-content">
                             <h4>NO.1</h4>
                             <span>Fundraiser</span>
-                            <span id="1-fundraiser" hidden>0xE57A0dF5D532A0c097069bcae26352816b0E4A69</span>
+                            <span id="1-fundraiser" hidden>0x9dC855da949352c84290af8F307CaC6106B41a4f</span>
                         </div>
                     </div>
                 </div>
@@ -849,7 +747,7 @@
     });
   </script> -->
     <script>
-        console.log($(".test1").length);
+        // console.log($(".test1").length);
         // for(var i = 0 ; i < $(".test1").length; i++){
         // }
         $(".test1").on('click', function () {

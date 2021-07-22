@@ -30,16 +30,17 @@ $(function() {
         $("#assign-account").append(`<li><a name="${accounts[i]}" class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
       }
       App.account = accounts[0];
-      $('#my-account').text(`My Account ${App.account.substring(2,10)}`);
+      $('#my-account').text(`My Account ${App.account}`);
       $("#account").text(`My Account: ${App.account.substring(2,10)}`);
       
+      // ### Setting Current Account
       $(".set-account").click(function(event){
         // alert("123");
         // console.log(event.target.text)
         App.account = event.target.name;
-        $("#my-account").text(`My Account ${App.account.substring(0,10)}`)
+        $("#my-account").text(`My Account ${App.account}`)
         $("#account").text(`My Account: ${App.account.substring(0,10)}`)
-        return false
+        return false;
       })
     });
 
@@ -47,7 +48,7 @@ $(function() {
     // Create Contract Instance
     $.getJSON("Donation.json", function(data){
       // change to contract address (Donation)
-      const address = '0x0bBECE91a18CE116f1C5E2D8885062a8E0D80b5c'; // sangil contract address
+      const address = '0x5f89bC99A522429387A916C67a5910988ec8c231'; // sangil contract address
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
 
@@ -71,23 +72,24 @@ $(function() {
         fromBlock: 0,
         toBlock: 'latest'
       }, function(error, events){ 
-        console.log(events); 
+        // console.log(events); 
         let index = 0;
         $("#tx-infos").text('');
         var carousel = $(".owl-carousel");
         carousel.trigger('destroy.owl.carousel'); 
         carousel.find('.owl-stage-outer').children().unwrap();
         carousel.removeClass("owl-center owl-loaded owl-text-select-on");
+
         for(var i = events.length - 1 ; i >= 0 && i > events.length - 10; i--){
           index = 1;
-          console.log(events[i].returnValues)
+          // console.log(events[i].returnValues)
           let txInfos = events[i].returnValues;
         //   trigger('add.owl.carousel', ['<div class="item"><img src="http://placehold.it/140x100" alt=""></div>'])
         // .trigger('refresh.owl.carousel');
           $(".owl-carousel").append(`<div class="item">
               <div class='card card${index}'>
                   <div class="price">
-                      <h6>$${web3.utils.fromWei(txInfos.amount)}</h6>
+                      <h6>${web3.utils.fromWei(txInfos.amount)} ETH</h6>
                   </div>
                   <div class='info'>
                       <h1 class='title'>fundraiser: ${txInfos.fundraiser.substring(0, 5)}</h1>
@@ -106,19 +108,24 @@ $(function() {
     }
 
     // ### Donate Fundtion Call###
-    $(".do-donation").click(function(){
+    $(".do-donation").click(function(e){
+      // e.preventDefault();
       let amount_ether = prompt("how much would you donate?");
       let amount = web3.utils.toWei('' + amount_ether);
-      console.log(amount);
+      // console.log(amount);
+
       let id = this.id;
-      console.log(id);
+      // console.log(id);
+      
       let fundraiserAccount = document.getElementById(`${id}-fundraiser`).innerHTML;
-      console.log(fundraiserAccount)
+      // console.log(fundraiserAccount)
+
       App.contracts.Donation.methods.donate(fundraiserAccount, amount).send({from: App.account, gasPrice: "20000000000", gas: "210000",})
-      .then(data => {
-        console.log(data);
-        
-        if (data == 2){
+      .then(result => {
+        console.log(result);
+        let flag = result.events.ActionEvent.returnValues.action;
+        console.log(flag);
+        if (flag == 2){
           // transaction to fundraiser
           web3.eth.sendTransaction({
             from: App.account, // change to sender
@@ -140,7 +147,7 @@ $(function() {
             }, 'password').then(console.log);
             alert("Thank you for your Donation!, This Funding Has Done!");
           });
-        }else if(data == 1){
+        }else if(flag == 1){
           web3.eth.sendTransaction({
             from: App.account, // change to sender
             gasPrice: "20000000000",
@@ -152,10 +159,12 @@ $(function() {
             console.log(result)
           }); 
           alert("Thank you for your Donation!");
-        }else if(data == 0){
+        }else if(flag == 0){
           // transaction error
           alert("error: please donate smaller amount");
         }
+        showTxHistory();
+
         web3.eth.getAccounts().then(async accounts => {
           $("#assign-account").text('')
           for(var i = 0; i < 4; i++){
@@ -165,9 +174,8 @@ $(function() {
             let balanceEther = Math.ceil(web3.utils.fromWei(balance));
             console.log(Math.ceil(balanceEther))
             
-            $("#assign-account").append(`<li><a class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
+            $("#assign-account").append(`<li><a class="set-account">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
           }
-        showTxHistory();
         });
       });
     });
@@ -231,5 +239,43 @@ $(function() {
         }
       })
     })
+
+    // ### Function for searching
+    $("#button-addon2").click(function (event) {
+      event.preventDefault();
+
+      const eoa = $("input[name='EOA']").val();
+      // console.log(eoa);
+      if (eoa.length != 42){
+        alert("Incorrect Account! (should add 0x at the head of the account)");
+        return false;
+      }
+      App.contracts.Donation.getPastEvents('DonationEvent', {
+          // filter: {myIndexedParam: [20,23], myOtherIndexedParam: '0x123456789...'}, // Using an array means OR: e.g. 20 or 23
+          fromBlock: 0,
+          toBlock: 'latest'
+        }, function(error, events){ 
+          // console.log(events);
+          $("#search-result").text('');
+          events.forEach(event => {
+            // console.log(event);
+            if(eoa.localeCompare(event.returnValues.donator, undefined, { sensitivity: 'accent' }) === 0){
+              console.log(event.returnValues.donator);
+              let infos = event.returnValues;
+              $("#search-result")
+              .append(`<div class="col-lg-4">
+                <div class="tab-item">
+                    <img src="images/daeyoung-1.jpg" alt="" width="100px">
+                    <h4>${web3.utils.fromWei(infos.amount)} ETH</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
+                    <div class="price">
+                        <h6>${infos.fundraiser.substring(0, 20)}..</h6>
+                    </div>
+                </div>
+            </div>`);
+          }
+        })
+      });
+    });
   });
 });
