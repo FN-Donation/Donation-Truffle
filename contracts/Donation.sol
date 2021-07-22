@@ -10,10 +10,10 @@ contract Donation {
     }
 
     Fundraiser[] public fundraisers;
-    // event MyEvent (address indexed donator, string value);
-    
+    event DonationEvent (address indexed donator, address indexed fundraiser, uint amount);
+        
     constructor () public {
-        fundraisers.push(Fundraiser(0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A, 100000000000000000000, 0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
+        // fundraisers.push(Fundraiser(0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A, 100000000000000000000, 0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
     }
 
     function donate(address payable fundraiserAccount, uint amount) payable public returns (uint){
@@ -48,9 +48,11 @@ contract Donation {
 
             // fundraiserAccount.transfer(amount);
             // transfer target to beneficiary
+            emit DonationEvent(msg.sender, fundraiserAccount, amount);
             return 2;
         }else if(amount + currentAmount < targetAmount){
             // fundraiserAccount.transfer(amount);
+            emit DonationEvent(msg.sender, fundraiserAccount, amount);
             return 1;
         }else {
             //error
@@ -75,8 +77,13 @@ contract Donation {
     //     }
     // }
 
-    function createFundraiser(address _fundraiserAccount, address _beneficiaryAccount,uint _targetAmount)public {
-        fundraisers.push(Fundraiser(_fundraiserAccount, _targetAmount, _beneficiaryAccount ));
+    function createFundraiser(address _fundraiserAccount, address _beneficiaryAccount, uint _targetAmount) public returns (uint) {
+        Fundraiser memory fundraiser;
+        fundraiser.fundraiserAccount = _fundraiserAccount;
+        fundraiser.beneficiaryAccount = _beneficiaryAccount;
+        fundraiser.targetAmount = _targetAmount;
+        fundraisers.push(fundraiser);
+        return fundraisers.length;
     }
     
     function showFundraiser(uint _index) public view returns (address, uint, address) {

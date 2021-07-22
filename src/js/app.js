@@ -15,7 +15,7 @@ $(function() {
     //   window.ethereum.enable();
     //   web3 = new Web3(web3Provider);
     // }else {
-    App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    App.web3Provider = new Web3.providers.WebsocketProvider('ws://localhost:7545');
     web3 = new Web3(App.web3Provider)
     // }
     // Assign the Donator Account
@@ -26,7 +26,7 @@ $(function() {
         let balance = await web3.eth.getBalance(accounts[i]);
         let balanceEther = Math.ceil(web3.utils.fromWei(balance));
         console.log(Math.ceil(balanceEther))
-        $("#assign-account").append(`<li><a class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
+        $("#assign-account").append(`<li><a name="${accounts[i]}" class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
       }
       App.account = accounts[0];
       $('#my-account').text(`My Account ${App.account.substring(2,10)}`);
@@ -35,7 +35,7 @@ $(function() {
       $(".set-account").click(function(event){
         // alert("123");
         // console.log(event.target.text)
-        App.account = event.target.text.split(":")[0];
+        App.account = event.target.name;
         $("#my-account").text(`My Account ${App.account.substring(0,10)}`)
         $("#account").text(`My Account: ${App.account.substring(0,10)}`)
         return false
@@ -44,7 +44,7 @@ $(function() {
 
     $.getJSON("Donation.json", function(data){
       // change to contract address (Donation)
-      const address = '0x22369567E3Ef06FeFe9567bBc6ee7F96A81b8698'; // sangil contract address
+      const address = '0x0bBECE91a18CE116f1C5E2D8885062a8E0D80b5c'; // sangil contract address
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
     });
@@ -53,7 +53,7 @@ $(function() {
     // Function showFundraiser
     // Check console log in F12
     $("#testContract").click(()=>{
-      App.contracts.Donation.methods.showFundraiser(1).call().then(result => console.log(result));
+      App.contracts.Donation.methods.showFundraiser(0).call().then(result => console.log(result));
     });
 
     // ------------- Sangil's Part -------------------
@@ -65,9 +65,10 @@ $(function() {
       console.log(id);
       let fundraiserAccount = document.getElementById(`${id}-fundraiser`).innerHTML;
       console.log(fundraiserAccount)
-      App.contracts.Donation.methods.donate(fundraiserAccount, amount).call()
+      App.contracts.Donation.methods.donate(fundraiserAccount, amount).send({from: App.account, gasPrice: "20000000000", gas: "210000",})
       .then(data => {
         console.log(data);
+        
         if (data == 2){
           // transaction to fundraiser
           web3.eth.sendTransaction({
@@ -98,7 +99,20 @@ $(function() {
             to: fundraiserAccount, // change to fundraiser account
             value: amount,
             data: ""
-          }, 'password').then(console.log); 
+          }, 'password').then((result) => {
+            console.log(result)
+          //   App.contracts.Donation.events.DonationEvent({
+          //     filter: {fundraiser: fundraiserAccount, donator: App.account}, // Using an array means OR: e.g. 20 or 23
+          //     fromBlock: 0
+          //   }, function(error, event){ console.log(event); })
+          //   .on('data', function(event){
+          //       console.log(event); // same results as the optional callback above
+          //   })
+          //   .on('changed', function(event){
+          //       // remove event from local database
+          //   })
+          //   .on('error', console.error);
+          }); 
           alert("Thank you for your Donation!");
         }else if(data == 0){
           // transaction error
@@ -132,17 +146,37 @@ $(function() {
           // check the console on the broswer F12
           web3.eth.personal.newAccount('p', (err, createdAddress) => {
             console.log(createdAddress)
+            let amounts = web3.utils.toWei($("#target-amount").val())
+            App.contracts.Donation.methods.createFundraiser(createdAddress, "0x809A846e00371024A8b82531eC25c99b60Bb11d9",amounts)
+            .send({from: App.account, gasPrice: "20000000000", gas: "200000"}).then(result => console.log(result));
             
-            let accounts = web3.eth.accounts
-            console.log(accounts)
-            App.contracts.Donation.methods.createFundraiser("0x809A846e00371024A8b82531eC25c99b60Bb11d9", "0x809A846e00371024A8b82531eC25c99b60Bb11d9", 123).call().then(result => console.log(result));
           });
           // create fundraiser
           // App.contracts.Donation.methods
           // start duration of fundraiser
 
-          App.contracts.Donation.methods.updateTimestamp().call().then(result => console.log(result));
+          // App.contracts.Donation.methods.updateTimestamp().call().then(result => console.log(result));
+          return false;
       });
+    $("#test").click(function(){
+      
+      // App.contracts.Donation.events.DonationEvent().watch((err, res)=>{
+      //   if(err){
+      //     console.log(err);
+      //   }else{
+      //     console.log(res);
+      //   }
+      // })
+      App.contracts.Donation.getPastEvents('DonationEvent', {
+        // filter: {myIndexedParam: [20,23], myOtherIndexedParam: '0x123456789...'}, // Using an array means OR: e.g. 20 or 23
+        fromBlock: 0,
+        toBlock: 'latest'
+    }, function(error, events){ console.log(events); })
+    .then(function(events){
+        console.log(events) // same results as the optional callback above
+    });
+    })
+    
     $("#season-pass").click(function(){
       App.contracts.Donation.methods.monthHavePassed().call()
       .then(passed => {
