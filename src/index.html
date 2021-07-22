@@ -45,7 +45,9 @@
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active" id="account"></a></li>
+                            <li class="scroll-to-section">
+                                <a href="#top" class="active" id="account"></a>
+                            </li>
                             <li class="scroll-to-section"><a href="#about">FindTx</a></li>
 
                             <!-- 
@@ -100,21 +102,21 @@
                             <!-- Item -->
                             <div class="item">
                                 <div class="img-fill">
-                                    <img src="images/slide-01.jpg" alt="">
+                                    <img src="images/daeyoungMain-1.jpg" alt="">
                                 </div>
                             </div>
                             <!-- // Item -->
                             <!-- Item -->
                             <div class="item">
                                 <div class="img-fill">
-                                    <img src="images/slide-02.jpg" alt="">
+                                    <img src="images/daeyoungMain-2.jpg" alt="">
                                 </div>
                             </div>
                             <!-- // Item -->
                             <!-- Item -->
                             <div class="item">
                                 <div class="img-fill">
-                                    <img src="images/slide-03.jpg" alt="">
+                                    <img src="images/daeyoungMain-3.jpg" alt="">
                                 </div>
                             </div>
                             <!-- // Item -->
@@ -127,40 +129,20 @@
     <!-- ***** Main Banner Area End ***** -->
 
     <!-- ***** About Area Starts ***** -->
-    <section class="section" id="about">
+    <section class="section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-xs-12">
-                    <div class="left-text-content">
-                        <div class="section-heading">
-                            <h6>About Us</h6>
-                            <h2>We Leave A Delicious Memory For You</h2>
+            <div class="row justify-content-center mb-5 element-animate">
+                <div class="col-md-8 text-center mb-5">
+                    <h2 class="text-uppercase heading border-bottom mb-4">Search</h2>
+                    <form id="searchEx">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="EOA" placeholder="EOA계좌를 검색해주세요." aria-label="EOA's name" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="searchEOA()">Button</button>
                         </div>
-                        <p>Klassy Cafe is one of the best <a href="https://templatemo.com/tag/restaurant" target="_blank" rel="sponsored">restaurant HTML templates</a> with Bootstrap v4.5.2 CSS framework. You can download and feel free to use this website
-                            template layout for your restaurant business. You are allowed to use this template for commercial purposes. <br><br>You are NOT allowed to redistribute the template ZIP file on any template donwnload website. Please contact
-                            us for more information.</p>
-                        <div class="row">
-                            <div class="col-4">
-                                <img src="images/about-thumb-01.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img src="images/about-thumb-02.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img src="images/about-thumb-03.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-xs-12">
-                    <div class="right-content">
-                        <div class="thumb">
-                            <a rel="nofollow" href="http://youtube.com"><i class="fa fa-play"></i></a>
-                            <img src="images/about-video-bg.jpg" alt="">
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
+        </div>
         </div>
     </section>
     <!-- ***** About Area Ends ***** -->
@@ -289,7 +271,7 @@
                 <div class="col-lg-4 offset-lg-4 text-center">
                     <div class="section-heading">
                         <h6>Our fundraiser</h6>
-                        <h2>We offer the best Delightness for you</h2>
+                        <h2>You can donate by hovering your mouse over the image and clicking the heart.</h2>
                     </div>
                 </div>
             </div>
@@ -376,7 +358,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="contact-form">
-                        <form id="contact" >
+                        <form id="contact">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <h4>Fundraiser</h4>
@@ -442,7 +424,7 @@
     <!-- ***** Reservation Area Ends ***** -->
 
     <!-- ***** Menu Area Starts ***** -->
-    <section class="section" id="offers">
+    <!-- <section class="section" id="offers">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 offset-lg-4 text-center">
@@ -712,7 +694,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- ***** Fundraisers Area Ends ***** -->
 
     <!-- ***** Footer Start ***** -->
@@ -744,35 +726,35 @@
                 </div>
             </div>
         </div>
-      </div>
-    </div>
-  </footer>
-  <button id="test">donate</button>
-  <button id="new">new account</button>
-  <button class="test1">test1</button>
-  <button class="test1">test2</button>
-  <button id="testContract">contract</button>
-  <!-- jQuery -->
-  <script src="js/plugin/jquery-2.1.0.min.js"></script>
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> -->
-  <!-- Bootstrap -->
-  <script src="js/bootstrap/popper.js"></script>
-  <script src="js/bootstrap/bootstrap.min.js"></script>
+        </div>
+        </div>
+    </footer>
+    <button id="test">donate</button>
+    <button id="new">new account</button>
+    <button class="test1">test1</button>
+    <button class="test1">test2</button>
+    <button id="testContract">contract</button>
+    <!-- jQuery -->
+    <script src="js/plugin/jquery-2.1.0.min.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> -->
+    <!-- Bootstrap -->
+    <script src="js/bootstrap/popper.js"></script>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
 
-  <!-- Plugins -->
-  <script src="js/plugin/owl-carousel.js"></script>
-  <script src="js/plugin/accordions.js"></script>
-  <script src="js/plugin/datepicker.js"></script>
-  <script src="js/plugin/scrollreveal.min.js"></script>
-  <script src="js/plugin/waypoints.min.js"></script>
-  <script src="js/plugin/jquery.counterup.min.js"></script>
-  <script src="js/plugin/imgfix.min.js"></script>
-  <script src="js/plugin/slick.js"></script>
-  <script src="js/plugin/lightbox.js"></script>
-  <script src="js/plugin/isotope.js"></script>
-  <!-- <script src="js/plugin/web3.min.js"></script> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.6/web3.min.js" integrity="sha512-jMEcX0Bev3VsCrACqEM3BFZvAMFXJSuTsMu0SttkAdMjquip6p3Oty5bbXrfg4T8n4g5BQYkGKxzLsrSqQgLUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Plugins -->
+    <script src="js/plugin/owl-carousel.js"></script>
+    <script src="js/plugin/accordions.js"></script>
+    <script src="js/plugin/datepicker.js"></script>
+    <script src="js/plugin/scrollreveal.min.js"></script>
+    <script src="js/plugin/waypoints.min.js"></script>
+    <script src="js/plugin/jquery.counterup.min.js"></script>
+    <script src="js/plugin/imgfix.min.js"></script>
+    <script src="js/plugin/slick.js"></script>
+    <script src="js/plugin/lightbox.js"></script>
+    <script src="js/plugin/isotope.js"></script>
+    <!-- <script src="js/plugin/web3.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.6/web3.min.js" integrity="sha512-jMEcX0Bev3VsCrACqEM3BFZvAMFXJSuTsMu0SttkAdMjquip6p3Oty5bbXrfg4T8n4g5BQYkGKxzLsrSqQgLUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Global Init -->
     <script src="js/custom.js"></script>
@@ -799,12 +781,12 @@
     });
   </script> -->
     <script>
-      console.log($(".test1").length);
-      // for(var i = 0 ; i < $(".test1").length; i++){
-      // }
-      $(".test1").on('click', function(){
-        alert(123);
-      })
+        console.log($(".test1").length);
+        // for(var i = 0 ; i < $(".test1").length; i++){
+        // }
+        $(".test1").on('click', function() {
+            alert(123);
+        })
     </script>
 
 </body>
