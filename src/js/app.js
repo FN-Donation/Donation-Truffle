@@ -7,7 +7,6 @@ let App = {
 
 $(function() {
   $(window).load(function() {
-    var donation;
     // create web3Provider
   
     // if (typeof web3 !== 'undefined'){
@@ -51,6 +50,8 @@ $(function() {
       const address = '0x0bBECE91a18CE116f1C5E2D8885062a8E0D80b5c'; // sangil contract address
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
+
+      showTxHistory();
     });
     
 
@@ -61,6 +62,48 @@ $(function() {
       App.contracts.Donation.methods.showFundraiser(0).call().then(result => console.log(result));
     });
 
+    // ### Show the Transaction Infos
+    let showTxHistory = function() {
+      
+      // get Transactions
+      App.contracts.Donation.getPastEvents('DonationEvent', {
+        // filter: {myIndexedParam: [20,23], myOtherIndexedParam: '0x123456789...'}, // Using an array means OR: e.g. 20 or 23
+        fromBlock: 0,
+        toBlock: 'latest'
+      }, function(error, events){ 
+        console.log(events); 
+        let index = 0;
+        $("#tx-infos").text('');
+        var carousel = $(".owl-carousel");
+        carousel.trigger('destroy.owl.carousel'); 
+        carousel.find('.owl-stage-outer').children().unwrap();
+        carousel.removeClass("owl-center owl-loaded owl-text-select-on");
+        for(var i = events.length - 1 ; i >= 0 && i > events.length - 10; i--){
+          index = 1;
+          console.log(events[i].returnValues)
+          let txInfos = events[i].returnValues;
+        //   trigger('add.owl.carousel', ['<div class="item"><img src="http://placehold.it/140x100" alt=""></div>'])
+        // .trigger('refresh.owl.carousel');
+          $(".owl-carousel").append(`<div class="item">
+              <div class='card card${index}'>
+                  <div class="price">
+                      <h6>$${web3.utils.fromWei(txInfos.amount)}</h6>
+                  </div>
+                  <div class='info'>
+                      <h1 class='title'>fundraiser: ${txInfos.fundraiser.substring(0, 5)}</h1>
+                      <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.
+                      </p>
+                      <div class="main-text-button">
+                          <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
+                      </div>
+                  </div>
+              </div>
+          </div>`);
+        }
+        carousel.owlCarousel();
+          // index += 1;
+      });
+    }
 
     // ### Donate Fundtion Call###
     $(".do-donation").click(function(){
@@ -124,6 +167,7 @@ $(function() {
             
             $("#assign-account").append(`<li><a class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
           }
+        showTxHistory();
         });
       });
     });
@@ -156,14 +200,15 @@ $(function() {
 
     //  ###Test Function, now=> get Past Events###
     $("#test").click(function(){
-      App.contracts.Donation.getPastEvents('DonationEvent', {
-        // filter: {myIndexedParam: [20,23], myOtherIndexedParam: '0x123456789...'}, // Using an array means OR: e.g. 20 or 23
-        fromBlock: 0,
-        toBlock: 'latest'
-    }, function(error, events){ console.log(events); })
-    .then(function(events){
-        console.log(events) // same results as the optional callback above
-    });
+    //   App.contracts.Donation.getPastEvents('DonationEvent', {
+    //     // filter: {myIndexedParam: [20,23], myOtherIndexedParam: '0x123456789...'}, // Using an array means OR: e.g. 20 or 23
+    //     fromBlock: 0,
+    //     toBlock: 'latest'
+    // }, function(error, events){ console.log(events); })
+    // .then(function(events){
+    //     console.log(events) // same results as the optional callback above
+    // });
+      showTxHistory();
     })
     
 
