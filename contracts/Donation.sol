@@ -17,7 +17,7 @@ contract Donation {
         // fundraisers.push(Fundraiser(0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A, 100000000000000000000, 0x8008bb9c9De470b88F99AfD0F761DEFc8bc73245));
     }
 
-    function donate(address payable fundraiserAccount, uint amount) payable public returns (uint){
+    function donate(address fundraiserAccount, uint amount) public returns (uint){
         // check not over the targetAmount
         // ##params : fundraiser_account, amount_to_donate
         // cur = fundraiser_account.balance
@@ -43,13 +43,14 @@ contract Donation {
         if (amount + currentAmount == targetAmount){
 
             // delete fundraiser from array
-            fundraisers[index] = fundraisers[fundraisers.length - 1];
-            delete fundraisers[fundraisers.length - 1];
-            fundraisers.length--;
+            // fundraisers[index] = fundraisers[fundraisers.length - 1];
+            // delete fundraisers[fundraisers.length - 1];
+            // fundraisers.length--;
 
             // fundraiserAccount.transfer(amount);
             // transfer target to beneficiary
             emit DonationEvent(msg.sender, fundraiserAccount, amount);
+            emit DonationEvent(fundraiserAccount, fundraiser.beneficiaryAccount, targetAmount);
             emit ActionEvent(2);
         }else if(amount + currentAmount < targetAmount){
             // fundraiserAccount.transfer(amount);

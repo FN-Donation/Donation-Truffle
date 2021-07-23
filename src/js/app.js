@@ -48,7 +48,7 @@ $(function() {
     // Create Contract Instance
     $.getJSON("Donation.json", function(data){
       // change to contract address (Donation)
-      const address = '0x5f89bC99A522429387A916C67a5910988ec8c231'; // sangil contract address
+      const address = '0xCC39f0C2686eF423497E1e0Db1C5D0Ff7de7034E'; // sangil contract address
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
 
@@ -111,14 +111,29 @@ $(function() {
     $(".do-donation").click(function(e){
       // e.preventDefault();
       let amount_ether = prompt("how much would you donate?");
-      let amount = web3.utils.toWei('' + amount_ether);
-      // console.log(amount);
+      if(!amount_ether) return false;
 
+      
+      let password = prompt("Please input your password")
+      if(!password) return false
+      else{
+        // console.log(App.account);
+        web3.eth.personal.unlockAccount(App.account, password, 600)
+        .then(result => console.log(result))
+        .catch((e) => {
+          alert("Wrong Password");
+          return false;
+        });
+      }
       let id = this.id;
       // console.log(id);
       
       let fundraiserAccount = document.getElementById(`${id}-fundraiser`).innerHTML;
       // console.log(fundraiserAccount)
+      // console.log(amount_ether)
+      let amount = web3.utils.toWei('' + amount_ether);
+      // console.log(amount);
+
 
       App.contracts.Donation.methods.donate(fundraiserAccount, amount).send({from: App.account, gasPrice: "20000000000", gas: "210000",})
       .then(result => {
@@ -155,9 +170,9 @@ $(function() {
             to: fundraiserAccount, // change to fundraiser account
             value: amount,
             data: ""
-          }, 'password').then((result) => {
+          }, password).then((result) => {
             console.log(result)
-          }); 
+          }).catch(e => console.log(e)); 
           alert("Thank you for your Donation!");
         }else if(flag == 0){
           // transaction error
