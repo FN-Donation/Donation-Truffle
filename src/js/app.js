@@ -48,7 +48,7 @@ $(function() {
     // Create Contract Instance
     $.getJSON("Donation.json", function(data){
       // change to contract address (Donation)
-      const address = '0xCC39f0C2686eF423497E1e0Db1C5D0Ff7de7034E'; // sangil contract address
+      const address = '0x08885970F9BF8742C896BCd97CE51fAA7276F5f8'; // sangil contract address
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
 
@@ -60,7 +60,7 @@ $(function() {
     // Function showFundraiser
     // Check console log in F12
     $("#testContract").click(()=>{
-      App.contracts.Donation.methods.showFundraiser(0).call().then(result => console.log(result));
+      App.contracts.Donation.methods.showFundraiser(2).call().then(result => console.log(result));
     });
 
     // ### Show the Transaction Infos
@@ -135,6 +135,31 @@ $(function() {
       // console.log(amount);
 
 
+      let resetting = function(){
+        showTxHistory();
+
+        web3.eth.getAccounts().then(async accounts => {
+          $("#assign-account").text('')
+          for(var i = 0; i < 4; i++){
+            // console.log(web3.eth.getBalance(accounts[i]).PromiseResult)
+            // var balanceEther = web3.utils.fromWei(web3.eth.getBalance(accounts[i]), "ether");
+            let balance = await web3.eth.getBalance(accounts[i]);
+            let balanceEther = Math.ceil(web3.utils.fromWei(balance));
+            console.log(Math.ceil(balanceEther))
+            
+            $("#assign-account").append(`<li><a name="${accounts[i]}" class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
+          }
+              // ### Setting Current Account
+          $(".set-account").click(function(event){
+            // alert("123");
+            // console.log(event.target.text)
+            App.account = event.target.name;
+            $("#my-account").text(`My Account ${App.account}`)
+            $("#account").text(`My Account: ${App.account.substring(0,10)}`)
+            return false;
+          })
+        });
+      }
       App.contracts.Donation.methods.donate(fundraiserAccount, amount).send({from: App.account, gasPrice: "20000000000", gas: "210000",})
       .then(result => {
         console.log(result);
@@ -149,18 +174,26 @@ $(function() {
             to: fundraiserAccount, // change to fundraiser account
             value: amount,
             data: ""
-          }, 'password').then(tx_info =>{
+          }, password).then(tx_info =>{
             console.log(tx_info);
             // transaction to beneficiary all balance in fundraiser
-            web3.eth.sendTransaction({
-              from: fundraiserAccount, // change to fundraiser
-              gasPrice: "20000000000",
-              gas: "21000",
-              to: '0x2C46aDBA9eA6948DfC6e2bb0fAc987E45E5410c1', // change to beneficiary account
-              value: amount - (20000000000 * 21000),
-              data: ""
-            }, 'password').then(console.log);
-            alert("Thank you for your Donation!, This Funding Has Done!");
+            web3.eth.personal.unlockAccount(fundraiserAccount, "p", 600).then(async result => {
+              console.log(result);
+              let target = await App.contracts.Donation.methods.showFundraiser(id-1).call();
+              console.log(target);
+              web3.eth.sendTransaction({
+                from: fundraiserAccount, // change to fundraiser
+                gasPrice: "20000000000",
+                gas: "21000",
+                to: '0x0040d51250AABf9Be43694f7000B703220B63588', // change to beneficiary account
+                value: target[1] - (20000000000 * 21000),
+                data: ""
+              }, 'p').then((d) => {
+                console.log(d);
+                alert("Thank you for your Donation!, This Funding Has Done!")
+                resetting();
+              });
+            });
           });
         }else if(flag == 1){
           web3.eth.sendTransaction({
@@ -172,26 +205,36 @@ $(function() {
             data: ""
           }, password).then((result) => {
             console.log(result)
+            alert("Thank you for your Donation!");
+            resetting();
           }).catch(e => console.log(e)); 
-          alert("Thank you for your Donation!");
         }else if(flag == 0){
           // transaction error
           alert("error: please donate smaller amount");
         }
-        showTxHistory();
+        // showTxHistory();
 
-        web3.eth.getAccounts().then(async accounts => {
-          $("#assign-account").text('')
-          for(var i = 0; i < 4; i++){
-            // console.log(web3.eth.getBalance(accounts[i]).PromiseResult)
-            // var balanceEther = web3.utils.fromWei(web3.eth.getBalance(accounts[i]), "ether");
-            let balance = await web3.eth.getBalance(accounts[i]);
-            let balanceEther = Math.ceil(web3.utils.fromWei(balance));
-            console.log(Math.ceil(balanceEther))
+        // web3.eth.getAccounts().then(async accounts => {
+        //   $("#assign-account").text('')
+        //   for(var i = 0; i < 4; i++){
+        //     // console.log(web3.eth.getBalance(accounts[i]).PromiseResult)
+        //     // var balanceEther = web3.utils.fromWei(web3.eth.getBalance(accounts[i]), "ether");
+        //     let balance = await web3.eth.getBalance(accounts[i]);
+        //     let balanceEther = Math.ceil(web3.utils.fromWei(balance));
+        //     console.log(Math.ceil(balanceEther))
             
-            $("#assign-account").append(`<li><a class="set-account">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
-          }
-        });
+        //     $("#assign-account").append(`<li><a name="${accounts[i]}" class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
+        //   }
+        //       // ### Setting Current Account
+        //   $(".set-account").click(function(event){
+        //     // alert("123");
+        //     // console.log(event.target.text)
+        //     App.account = event.target.name;
+        //     $("#my-account").text(`My Account ${App.account}`)
+        //     $("#account").text(`My Account: ${App.account.substring(0,10)}`)
+        //     return false;
+        //   })
+        // });
       });
     });
 
@@ -208,7 +251,7 @@ $(function() {
           web3.eth.personal.newAccount('p', (err, createdAddress) => {
             console.log(createdAddress)
             let amounts = web3.utils.toWei($("#target-amount").val())
-            App.contracts.Donation.methods.createFundraiser(createdAddress, "0x809A846e00371024A8b82531eC25c99b60Bb11d9",amounts)
+            App.contracts.Donation.methods.createFundraiser(createdAddress, "0x0040d51250AABf9Be43694f7000B703220B63588",amounts)
             .send({from: App.account, gasPrice: "20000000000", gas: "200000"}).then(result => console.log(result));
             
           });
