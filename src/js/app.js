@@ -3,6 +3,32 @@ let App = {
     web3Provider: null,
     contracts: {},
     account: null,
+    fundraiser: {"account1":{
+        "fundName":"혼자 하늘이를 돌보는 아픈 엄마, 내일 굶을까 걱정입니다.",
+        "description":"태어나기 전부터 폭력에 시달렸던 하늘이, 그리고 엄마 하늘이가 엄마 배 속에 있을 때부터 아빠의 폭력은 시작되었습니다. 폭언과 폭력이 일상이 될 쯤 하늘이가 세상에 태어났습니다. 갓난아기와 함께 지내는 일은 깜짝 놀랄 만큼 신비하지만 그만큼 힘이 듭니다. 그 낯선 어려움에 하늘이 아빠는 더 심한 폭력으로 하늘이 엄마에게 스트레스를 풀었습니다. 출산 후 제대로 된 몸조리도 할 수 없었던 엄마는 홀로 하늘이를 돌보며 아빠의 폭력에 어떤 대응도 하지 못했습니다. 하늘이가 두 살이 될 즈음 하늘이 엄마는 병원에서 입원권유를 받을 지경까지 몸이 상태가 악화되었습니다. 지속적인 폭력으로 몸이 망가져 있는 것은 물론이고 우울증과 공황장애로 정상적인 생활이 불가능했기 때문입니다.",
+        "organizationEmail":"푸드스마일즈 우양",
+        "date":"2021.08.31",
+        "category":"Children",
+        "image" : "images/daeyoung-1.jpg"
+    },
+    "account2":{
+        "fundName":"피오줌을 누는 젤리, 털이 숭숭 빠진 만두",
+        "description":"보호소에서 지내며 병에 걸린 동물들. 최근 카라는 ‘달봉이네 보호소’에서 15마리의 개를 구조했습니다. 이중 중 10마리는 심장사상충 진단을 받았습니다. 심장사상충은 치료가 어렵고 시간과 비용이 많이 들며 색전증이나 폐렴 같은 합병증으로 이어져 사망에 이를 수도 있는 아주 위험한 중증 질환입니다. 심장사상충 진단을 받은 젤리는 혈뇨를 누는 등 상태가 매우 좋지 못하고, 젤리와 동일한 심장사상충 진단을 받은 위고, 하니, 데니스, 델리, 모네, 뽀양, 철수, 뽀리, 뽀은 전처치약을 처방받고 치료 계획에 따라 치료할 예정입니다.",
+        "organizationEmail":"",
+        "date":"2021.07.31",
+        "category":"Animal",
+        "image" : "images/daeyoung-2.jpg"
+    },
+    "account3":{
+        "fundName":"해양쓰레기로부터 바다를 구하는 방법!",
+        "description":"플라스틱 위험에 빠진 도심과 바다. 도심에서 주로 발견되는 쓰레기는 무엇이라고 생각하시나요? 바로 담배꽁초와 플라스틱 쓰레기입니다. 요즘과 같이 방역을 이유로 배달 용기, 플라스틱 컵과 같은 플라스틱류 쓰레기가 많이 발견되는데요. 바다에서 발견되는 쓰레기도 이와 다르지 않다는 것 알고 계시나요? 영국 가디언지에 따르면 바다에서 발견되는 쓰레기의 80% 이상이 플라스틱, 그중 음식 포장 용기가 큰 비중을 차지한다고 발표하였습니다. 우리의 편한 일상에 짧은 순간 사용되는 플라스틱 일회용품들이 바다에 쌓여 몇 십 년, 몇 백 년을 표류해야 하다니 놀라운 사실이죠.",
+        "organizationEmail":"환경재단",
+        "date":"2021.12.12",
+        "category":"Nature",
+        "image" : "images/daeyoung-3.jpg"
+    }
+  },
+  number: 0
 }
 
 $(function() {
@@ -86,17 +112,27 @@ $(function() {
           let txInfos = events[i].returnValues;
         //   trigger('add.owl.carousel', ['<div class="item"><img src="http://placehold.it/140x100" alt=""></div>'])
         // .trigger('refresh.owl.carousel');
+          let description;
+          let fundName;
+          let date;
+          for (var i = 0; i < App.number; i++){
+            if (App.fundraiser[`account${i + 1}`]['f-address'].localeCompare(txInfos.fundraiser, undefined, { sensitivity: 'accent' }) === 0){
+              description = App.fundraiser[`account${i + 1}`]['description'];
+              fundName = App.fundraiser[`account${i + 1}`]['fundName'];
+              date = App.fundraiser[`account${i + 1}`]['date'];
+              break;
+            }
+          }
           $(".owl-carousel").append(`<div class="item">
               <div class='card card${index}'>
                   <div class="price">
                       <h6>${web3.utils.fromWei(txInfos.amount)} ETH</h6>
                   </div>
                   <div class='info'>
-                      <h1 class='title'>fundraiser: ${txInfos.fundraiser.substring(0, 5)}</h1>
-                      <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.
-                      </p>
+                      <h1 class='title'>fundraiser: ${fundName}</h1>
+                      <p class='description'>${description}</p>
                       <div class="main-text-button">
-                          <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
+                          <div class="scroll-to-section"><a>${date} <i class="fa fa-angle-down"></i></a></div>
                       </div>
                   </div>
               </div>
@@ -108,7 +144,7 @@ $(function() {
     }
 
     // ### Donate Fundtion Call###
-    $(".do-donation").click(function(e){
+    let donationFunction = () => $(".do-donation").click(function(e){
       // e.preventDefault();
       let amount_ether = prompt("how much would you donate?");
       if(!amount_ether) return false;
@@ -212,29 +248,6 @@ $(function() {
           // transaction error
           alert("error: please donate smaller amount");
         }
-        // showTxHistory();
-
-        // web3.eth.getAccounts().then(async accounts => {
-        //   $("#assign-account").text('')
-        //   for(var i = 0; i < 4; i++){
-        //     // console.log(web3.eth.getBalance(accounts[i]).PromiseResult)
-        //     // var balanceEther = web3.utils.fromWei(web3.eth.getBalance(accounts[i]), "ether");
-        //     let balance = await web3.eth.getBalance(accounts[i]);
-        //     let balanceEther = Math.ceil(web3.utils.fromWei(balance));
-        //     console.log(Math.ceil(balanceEther))
-            
-        //     $("#assign-account").append(`<li><a name="${accounts[i]}" class="set-account" href="#">${accounts[i].substring(2, 10)} : ${balanceEther} ETH</a></li>`);
-        //   }
-        //       // ### Setting Current Account
-        //   $(".set-account").click(function(event){
-        //     // alert("123");
-        //     // console.log(event.target.text)
-        //     App.account = event.target.name;
-        //     $("#my-account").text(`My Account ${App.account}`)
-        //     $("#account").text(`My Account: ${App.account.substring(0,10)}`)
-        //     return false;
-        //   })
-        // });
       });
     });
 
@@ -253,7 +266,27 @@ $(function() {
             let amounts = web3.utils.toWei($("#target-amount").val())
             App.contracts.Donation.methods.createFundraiser(createdAddress, "0x0040d51250AABf9Be43694f7000B703220B63588",amounts)
             .send({from: App.account, gasPrice: "20000000000", gas: "200000"}).then(result => console.log(result));
-            
+            App.number += 1;
+            console.log(App.fundraiser[`account${App.number}`]);
+            $("#fundraisers-card").append(
+            `<div class="col-lg-4">
+                    <div class="fundraiser-item">
+                        <div class="thumb">
+                            <div class="overlay"></div>
+                            <ul class="social-icons">
+                                <li><a id="${App.number}" class="do-donation" href="#menu"><i class="fa fa-heart"></i></a></li>
+                            </ul>
+                            <img src="images/daeyoung-${App.number}.jpg" alt="fundraiser #1">
+                        </div>
+                        <div class="down-content">
+                            <h4>${App.fundraiser[`account${App.number}`]["fundName"]}</h4>
+                            <span>${App.fundraiser[`account${App.number}`]["category"]}</span>
+                            <span id="${App.number}-fundraiser" hidden>${createdAddress}</span>
+                        </div>
+                    </div>
+                </div> `);
+              App.fundraiser[`account${App.number}`]["f-address"] = createdAddress;
+              donationFunction();
           });
           // create fundraiser
           // App.contracts.Donation.methods
@@ -335,5 +368,7 @@ $(function() {
         })
       });
     });
+
+    
   });
 });

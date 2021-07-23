@@ -71,7 +71,7 @@ contract Donation {
     }
     //true if 30 days have passed since the last updateTimestamp was called, false if not yet
     function monthHavePassed() public view returns (bool) {
-        return (now >= (lastUpdated + 30 days));
+        return (now >= (lastUpdated + 1 minutes));
     }
 
     function createFundraiser(address _fundraiserAccount, address _beneficiaryAccount, uint _targetAmount) public returns (uint) {
