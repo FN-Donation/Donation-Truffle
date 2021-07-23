@@ -74,7 +74,7 @@ $(function() {
     // Create Contract Instance
     $.getJSON("Donation.json", function(data){
       // change to contract address (Donation)
-      const address = '0x08885970F9BF8742C896BCd97CE51fAA7276F5f8'; // sangil contract address
+      const address = '0x51358a85b25C8a5Ac49bB07586316928907Da17e'; // sangil contract address
       console.log(data.abi)
       App.contracts.Donation = new web3.eth.Contract(data.abi, address);
 
@@ -115,28 +115,28 @@ $(function() {
           let description;
           let fundName;
           let date;
-          for (var i = 0; i < App.number; i++){
-            if (App.fundraiser[`account${i + 1}`]['f-address'].localeCompare(txInfos.fundraiser, undefined, { sensitivity: 'accent' }) === 0){
-              description = App.fundraiser[`account${i + 1}`]['description'];
-              fundName = App.fundraiser[`account${i + 1}`]['fundName'];
-              date = App.fundraiser[`account${i + 1}`]['date'];
+          for (var j = 0; j < App.number; j++){
+            if (App.fundraiser[`account${j + 1}`]['f-address'].localeCompare(txInfos.fundraiser, undefined, { sensitivity: 'accent' }) === 0 || App.fundraiser[`account${j + 1}`]['f-address'].localeCompare(txInfos.donator, undefined, { sensitivity: 'accent' }) === 0){
+              description = App.fundraiser[`account${j + 1}`]['description'];
+              fundName = App.fundraiser[`account${j + 1}`]['fundName'];
+              date = App.fundraiser[`account${j + 1}`]['date'];
+              $(".owl-carousel").append(`<div class="item">
+                  <div class='card card${j + 1}'>
+                      <div class="price">
+                          <h6>${web3.utils.fromWei(txInfos.amount)} ETH</h6>
+                      </div>
+                      <div class='info'>
+                          <h1 class='title'>fundraiser: ${fundName}</h1>
+                          <p class='description'>${description}</p>
+                          <div class="main-text-button">
+                              <div class="scroll-to-section"><a>${date} <i class="fa fa-angle-down"></i></a></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>`);
               break;
             }
           }
-          $(".owl-carousel").append(`<div class="item">
-              <div class='card card${index}'>
-                  <div class="price">
-                      <h6>${web3.utils.fromWei(txInfos.amount)} ETH</h6>
-                  </div>
-                  <div class='info'>
-                      <h1 class='title'>fundraiser: ${fundName}</h1>
-                      <p class='description'>${description}</p>
-                      <div class="main-text-button">
-                          <div class="scroll-to-section"><a>${date} <i class="fa fa-angle-down"></i></a></div>
-                      </div>
-                  </div>
-              </div>
-          </div>`);
         }
         carousel.owlCarousel();
           // index += 1;
@@ -144,7 +144,7 @@ $(function() {
     }
 
     // ### Donate Fundtion Call###
-    let donationFunction = () => $(".do-donation").click(function(e){
+    let donationFunction = (n) => $(`.do-donation${n}`).click(function(e){
       // e.preventDefault();
       let amount_ether = prompt("how much would you donate?");
       if(!amount_ether) return false;
@@ -221,7 +221,7 @@ $(function() {
                 from: fundraiserAccount, // change to fundraiser
                 gasPrice: "20000000000",
                 gas: "21000",
-                to: '0x0040d51250AABf9Be43694f7000B703220B63588', // change to beneficiary account
+                to: '0x786975aF91F8d92D9810139Fab535b84cB1F3161', // change to beneficiary account
                 value: target[1] - (20000000000 * 21000),
                 data: ""
               }, 'p').then((d) => {
@@ -264,7 +264,7 @@ $(function() {
           web3.eth.personal.newAccount('p', (err, createdAddress) => {
             console.log(createdAddress)
             let amounts = web3.utils.toWei($("#target-amount").val())
-            App.contracts.Donation.methods.createFundraiser(createdAddress, "0x0040d51250AABf9Be43694f7000B703220B63588",amounts)
+            App.contracts.Donation.methods.createFundraiser(createdAddress, "0x786975aF91F8d92D9810139Fab535b84cB1F3161",amounts)
             .send({from: App.account, gasPrice: "20000000000", gas: "200000"}).then(result => console.log(result));
             App.number += 1;
             console.log(App.fundraiser[`account${App.number}`]);
@@ -274,7 +274,7 @@ $(function() {
                         <div class="thumb">
                             <div class="overlay"></div>
                             <ul class="social-icons">
-                                <li><a id="${App.number}" class="do-donation" href="#menu"><i class="fa fa-heart"></i></a></li>
+                                <li><a id="${App.number}" class="do-donation${App.number}" href="#menu"><i class="fa fa-heart"></i></a></li>
                             </ul>
                             <img src="images/daeyoung-${App.number}.jpg" alt="fundraiser #1">
                         </div>
@@ -286,7 +286,7 @@ $(function() {
                     </div>
                 </div> `);
               App.fundraiser[`account${App.number}`]["f-address"] = createdAddress;
-              donationFunction();
+              donationFunction(App.number);
           });
           // create fundraiser
           // App.contracts.Donation.methods
@@ -322,7 +322,7 @@ $(function() {
             from: "0xEb3909f904D19E2ad7D0A7EB11284C333A9C0061", // change to fudnraiser
             gasPrice: "20000000000",
             gas: "21000",
-            to: '0x42AE8ac9A9d74272Fef45f793193E92B4CFaca6A', // change to beneficiary account
+            to: '0x786975aF91F8d92D9810139Fab535b84cB1F3161', // change to beneficiary account
             value: amount,
             data: ""
           }, 'password').then(console.log);
@@ -353,17 +353,28 @@ $(function() {
             if(eoa.localeCompare(event.returnValues.donator, undefined, { sensitivity: 'accent' }) === 0){
               console.log(event.returnValues.donator);
               let infos = event.returnValues;
-              $("#search-result")
-              .append(`<div class="col-lg-4">
-                <div class="tab-item">
-                    <img src="images/daeyoung-1.jpg" alt="" width="100px">
-                    <h4>${web3.utils.fromWei(infos.amount)} ETH</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur koit adipiscing elit, sed do.</p>
-                    <div class="price">
-                        <h6>${infos.fundraiser.substring(0, 20)}..</h6>
+              let description;
+              let fundName;
+              let image;
+              for (var j = 0; j < App.number; j++){
+                if (App.fundraiser[`account${j + 1}`]['f-address'].localeCompare(infos.fundraiser, undefined, { sensitivity: 'accent' }) === 0 || App.fundraiser[`account${j + 1}`]['f-address'].localeCompare(infos.donator, undefined, { sensitivity: 'accent' }) === 0){
+                  description = App.fundraiser[`account${j + 1}`]['description'];
+                  fundName = App.fundraiser[`account${j + 1}`]['fundName'];
+                  image = App.fundraiser[`account${j + 1}`]['image'];
+                  $("#search-result")
+                  .append(`<div class="col-lg-4">
+                    <div class="tab-item">
+                        <img src="${image}" alt="" width="100px">
+                        <h4>${web3.utils.fromWei(infos.amount)} ETH</h4>
+                        <p>${fundName}</p>
+                        <div class="price">
+                            <h6>${infos.fundraiser.substring(0, 20)}..</h6>
+                        </div>
                     </div>
-                </div>
-            </div>`);
+                  </div>`);
+                  break;
+              }
+            }
           }
         })
       });
